@@ -4,3 +4,4 @@ kind: Kustomization
 
 resources:
   - 00-oauth.yaml
+  - 01-secret.yaml
