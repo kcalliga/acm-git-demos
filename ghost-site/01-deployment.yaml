@@ -42,11 +42,9 @@ spec:
         - name: database__connection__host
           value: localhost
         - name: database__connection__password
-          value: <redacted>
+          value: password
         - name: database__connection__user
           value: root
-        - name: url
-          value: https://myopenshiftblog.com
         image: docker.io/ghost:5.25
         imagePullPolicy: Always
         name: myopenshiftblog
@@ -61,7 +59,7 @@ spec:
           name: myopenshiftblog-content
       - env:
         - name: MYSQL_ROOT_PASSWORD
-          value: <redacted>
+          value: password
         image: mysql:8.0
         name: db
         volumeMounts:
