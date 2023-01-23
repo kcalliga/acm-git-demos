@@ -16,5 +16,3 @@ metadata:
       name: htpasswd
       type: HTPasswd
 kind: List
-metadata:
-  resourceVersion: ""
