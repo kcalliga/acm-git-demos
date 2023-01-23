@@ -1,4 +1,17 @@
-# Copy and Paste
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: oauth
+  namespace: default
+  annotations:
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: v1
+        kind: OAuth
+        metadata:
+          name: cluster
           annotations:
             include.release.openshift.io/ibm-cloud-managed: "true"
             include.release.openshift.io/self-managed-high-availability: "true"
