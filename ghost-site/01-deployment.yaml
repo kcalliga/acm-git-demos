@@ -72,8 +72,6 @@ spec:
       terminationGracePeriodSeconds: 30
       volumes:
       - name: myopenshiftblog-content
-        persistentVolumeClaim:
-          claimName: myopenshiftblog-content
+        emptyDir:
       - name: myopenshiftblog-db
-        persistentVolumeClaim:
-          claimName: myopenshiftblog-db
+        emptyDir:
