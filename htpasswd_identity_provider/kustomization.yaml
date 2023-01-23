@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - 00-oauth.yaml
   - 01-secret.yaml
+  - 02-user1-cluster-admin.yaml
