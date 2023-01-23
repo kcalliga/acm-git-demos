@@ -26,6 +26,9 @@ spec:
             mappingMethod: claim
             type: HTPasswd
             kind: List
+        spec:
+          remediationAction: enforce
+          severity: high
     - objectDefinition:
         apiVersion: v1
         data:
@@ -35,6 +38,9 @@ spec:
           name: htpasswd-gmszp
           namespace: openshift-config
         type: Opaque
+        spec:
+          severity: high
+          remediationAction: enforce
     - objectDefinition:
         apiVersion: rbac.authorization.k8s.io/v1
         kind: ClusterRoleBinding
@@ -48,6 +54,9 @@ spec:
           - name: user1
             apiGroup: rbac.authorization.k8s.io
             kind: User
+        spec:
+          remediationAction: enforce
+          severity: high
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
