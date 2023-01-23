@@ -1,0 +1,88 @@
+# Copy and Paste
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: oauth
+  namespace: default
+  annotations:
+spec:
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: IamPolicy
+        metadata:
+          name: policy-limitclusteradmin
+        spec:
+          severity: medium
+          remediationAction: inform
+          maxClusterRoleBindingUsers: 5
+	- objectDefinition:
+	    apiVersion: config.openshift.io/v1
+        kind: OAuth
+        metadata:
+          annotations:
+            include.release.openshift.io/ibm-cloud-managed: "true"
+            include.release.openshift.io/self-managed-high-availability: "true"
+            include.release.openshift.io/single-node-developer: "true"
+            release.openshift.io/create-only: "true"
+          name: cluster
+        spec:
+        identityProviders:
+        - htpasswd:
+            fileData:
+              name: htpasswd-gmszp
+          mappingMethod: claim
+          name: htpasswd
+          type: HTPasswd
+        kind: List
+    - objectDefinition:
+        apiVersion: v1
+        data:
+          htpasswd: dXNlcjI6JDJ5JDA1JDRkQ2wvMjVNZG1sSWJvT3FRMGs5cGVMY3pGUElsRFRJQkk0ZWpicmE5MXhpM1FyNWpoNjV1DQp1c2VyMTokMnkkMDUkZE9tV2pkM2lvRFhUMEV5dUNsMW12Li43VnJuTjYwSjJkakYuMDdmTXJkZGo1U1RIZFFlaWENCg==
+        kind: Secret
+        metadata:
+          name: htpasswd-gmszp
+          namespace: openshift-config
+        type: Opaque
+    - objectDefinition:
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        metadata:
+          name: cluster-admin-0
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: cluster-admin
+        subjects:
+        - apiGroup: rbac.authorization.k8s.io
+          kind: User
+          name: user1	
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: oauth-placement
+  namespace: default
+spec:
+  clusterSelector:
+    matchExpressions:
+      - key: local-cluster
+        operator: In
+        values:
+          - "true"
+  clusterConditions: []
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: oauth-placement
+  namespace: default
+placementRef:
+  name: oauth-placement
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+subjects:
+  - name: oauth
+    apiGroup: policy.open-cluster-management.io
+    kind: Policy
