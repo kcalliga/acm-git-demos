@@ -9,7 +9,6 @@ spec:
   disabled: false
   policy-templates:
     - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
         kind: IamPolicy
         metadata:
           name: policy-limitclusteradmin
@@ -17,25 +16,25 @@ spec:
           severity: medium
           remediationAction: inform
           maxClusterRoleBindingUsers: 5
-	- objectDefinition:
-	    apiVersion: config.openshift.io/v1
+    - objectDefinition:
+        apiVersion: v1
         kind: OAuth
         metadata:
+          name: cluster
           annotations:
             include.release.openshift.io/ibm-cloud-managed: "true"
             include.release.openshift.io/self-managed-high-availability: "true"
             include.release.openshift.io/single-node-developer: "true"
             release.openshift.io/create-only: "true"
-          name: cluster
-        spec:
+          spec:
         identityProviders:
-        - htpasswd:
-            fileData:
-              name: htpasswd-gmszp
-          mappingMethod: claim
-          name: htpasswd
-          type: HTPasswd
-        kind: List
+          - name: htpasswd
+            htpasswd:
+              fileData:
+                name: htpasswd-gmszp
+            mappingMethod: claim
+            type: HTPasswd
+            kind: List
     - objectDefinition:
         apiVersion: v1
         data:
@@ -51,13 +50,13 @@ spec:
         metadata:
           name: cluster-admin-0
         roleRef:
+          name: cluster-admin
           apiGroup: rbac.authorization.k8s.io
           kind: ClusterRole
-          name: cluster-admin
         subjects:
-        - apiGroup: rbac.authorization.k8s.io
-          kind: User
-          name: user1	
+          - name: user1
+            apiGroup: rbac.authorization.k8s.io
+            kind: User
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
