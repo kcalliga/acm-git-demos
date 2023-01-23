@@ -8,7 +8,7 @@ spec:
   disabled: false
   policy-templates:
     - objectDefinition:
-        apiVersion: v1
+        apiVersion: config.openshift.io/v1
         kind: OAuth
         metadata:
           name: cluster
