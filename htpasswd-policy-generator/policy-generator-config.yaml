@@ -11,4 +11,4 @@ policyDefaults:
 policies:
   - name: push-htpasswd-policy
     manifests:
-      - path: htpasswd-policy.yaml
+      - path: htpasswd-combined.yaml
